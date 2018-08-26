@@ -1,0 +1,28 @@
+﻿<Window x:Class="KalymnosBT.Views.CommentEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KalymnosBT.Views"
+        mc:Ignorable="d"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Title="Comment" Height="250" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBox Text="{Binding Text, Mode=TwoWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" Margin="5" AcceptsReturn="True" />
+
+        <UniformGrid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Rows="1">
+            <Button Content="OK" Click="OnBtnOk" Margin="5" Padding="5" />
+            <Button Content="Cancel" IsCancel="True" Margin="5" Padding="5" />
+        </UniformGrid>
+        <Button x:Name="btnDelete" Grid.Row="1" HorizontalAlignment="Right" Margin="5" Padding="5" Click="OnBtnDelete" Background="Transparent" BorderThickness="0" ToolTip="Delete this comment">
+            <Path Data="{StaticResource IconDelete}" Height="16" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+        </Button>
+
+    </Grid>
+</Window>

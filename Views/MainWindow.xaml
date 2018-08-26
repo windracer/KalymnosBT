@@ -1,0 +1,242 @@
+﻿<Window x:Class="KalymnosBT.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KalymnosBT"
+        xmlns:models="clr-namespace:KalymnosBT.Models"
+        mc:Ignorable="d"
+        xmlns:designData="clr-namespace:KalymnosBT.DesignData"
+        xmlns:settings="clr-namespace:KalymnosBT.Settings"
+        xmlns:mvvmBase="clr-namespace:KalymnosBT.MVVMBase"
+        d:DataContext="{d:DesignInstance designData:SampleMainViewModel, IsDesignTimeCreatable=True}"
+        d:DesignWidth="550"
+        d:DesignHeight="450"
+        ResizeMode="CanResizeWithGrip"
+        Title="KalymnosBT - Bug tracker for indi-(e)-viduals" 
+        WindowState="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowState, Mode=TwoWay}"
+        Top="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowTopPosition, Mode=TwoWay}"
+        Left="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowLeftPosition, Mode=TwoWay}"
+        Height="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowHeight, Mode=TwoWay}" 
+        Width="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowWidth, Mode=TwoWay}"
+        Foreground="Black"
+        Closed="OnWindowClosed"
+        Closing="OnWindowClosing"
+        ContentRendered="OnWindowContentRendered"
+        Icon="/KalymnosBT;component/main-icon.ico">
+    <Window.Resources>
+        <Duration x:Key="listBoxItemRemovalDuration">0:0:0.3</Duration>
+        <Storyboard x:Key="storyboardListBoxItemRemoval" >
+            <DoubleAnimation Storyboard.TargetName="issueBorderTemplate"
+                             Storyboard.TargetProperty="Opacity" 
+                             From="1" To="0" Duration="{StaticResource listBoxItemRemovalDuration}" />
+        </Storyboard>
+
+        <models:IssueIsFixedToColorConverter x:Key="issueIsFixedToColorConverter" />
+        <settings:DesktopSettings x:Key="desktopSettings" />
+        <settings:BoolToWindowStateConverter x:Key="boolToWindowStateConverter"/>
+        <models:IssueIsFixedToTextDecorationConverter x:Key="issueIsFixedToTextDecorationConverter"/>
+        <Style x:Key="issuesListSource" TargetType="ListBox">
+            <Setter Property="ItemsSource" Value="{Binding SelectedProject.Issues}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=dataSourceCombo, Path=SelectedIndex}" Value="1">
+                    <Setter Property="ItemsSource" Value="{Binding SelectedProject.Backlog}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=dataSourceCombo, Path=SelectedIndex}" Value="2">
+                    <Setter Property="ItemsSource" Value="{Binding SelectedProject.Trash}" />
+                </DataTrigger>
+            </Style.Triggers>
+            
+        </Style>
+        <Style x:Key="listViewRowStyle" TargetType="{x:Type Grid}">
+            <Style.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Foreground" Value="{Binding IsFixed, Converter={StaticResource issueIsFixedToColorConverter}}" />
+                </Style>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="Fill" Value="{Binding IsFixed, Converter={StaticResource issueIsFixedToColorConverter}}" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        <DataTemplate x:Key="IssueListRowTemplate">
+            <Border Background="#F2F2F2" BorderThickness="1" BorderBrush="#559A9B" x:Name="issueBorderTemplate">
+                <Border.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.EditIssueCommand}" />
+                </Border.InputBindings>
+                <Grid Margin="2" Style="{StaticResource listViewRowStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.RowSpan="2">
+                        <Path Width="16" Height="16" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"
+                              Data="{StaticResource IconStarFilled}" Fill="DarkGoldenrod">
+                            <Path.Style>
+                                <Style TargetType="{x:Type Path}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Starred}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                        <Path Width="16" Height="16" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"
+                              Data="{StaticResource IconExclamation}" Fill="Red">
+                            <Path.Style>
+                                <Style TargetType="{x:Type Path}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Important}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                        <Path Width="16" Height="16" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"
+                              Data="{StaticResource IconPin}" Fill="DarkGreen">
+                            <Path.Style>
+                                <Style TargetType="{x:Type Path}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsBacklogged}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                    </StackPanel>
+                    <TextBlock  Grid.Column="1" FontWeight="Bold" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding DisplayId}" Margin="2,2,10,2" 
+                               TextDecorations="{Binding IsFixed, Converter={StaticResource issueIsFixedToTextDecorationConverter}}"/>
+                    <TextBlock Grid.Column="2" 
+                               VerticalAlignment="Center" 
+                               Text="{Binding Title}" 
+                               FontSize="14" TextWrapping="Wrap" />
+                    <DockPanel Grid.Column="3" Margin="10 2 2 2">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="2" Text="{Binding Comments.Count}" VerticalAlignment="Center" />
+                            <Path Margin="2" Height="16" Data="{StaticResource IconComments}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Margin="2" Text="{Binding Votes.Count}" VerticalAlignment="Center" />
+                            <Path Margin="2"  Height="16"  Data="{StaticResource IconLike}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                        </StackPanel>
+                    </DockPanel>
+                    <TextBlock Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Right"  Text="{Binding Created, StringFormat=d}" Margin="25,2,2,2" />
+                    <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="5" Text="{Binding Details}" FontSize="12"  Foreground="#4D5250"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Border Background="DodgerBlue">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="btnMainMenu" HorizontalAlignment="Right" Margin="10 5 0 5" Background="Transparent" BorderThickness="0" ToolTip="Show backstage window" Command="{Binding ShowBackstageWindowCommand}">
+                        <Path Data="{StaticResource IconMountain}" Height="24" Fill="WhiteSmoke" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                    </Button>
+                    <ComboBox Margin="10" MinWidth="150" SelectedIndex="0" Padding="5"
+                          ItemsSource="{Binding Model.Projects}" DisplayMemberPath="Name" VerticalContentAlignment="Center" 
+                              SelectedItem="{Binding SelectedProject, Mode=TwoWay}"
+                              x:Name="comboProjects"/>
+                    <Button x:Name="btnCreateIssue" 
+                            Content="Create Issue" 
+                            Background="DarkOrange" 
+                            Foreground="White" FontWeight="Bold" Padding="10 0" Margin="5" 
+                            Height="{Binding ActualHeight, ElementName=comboProjects}"
+                            VerticalAlignment="Center"
+                            Command="{Binding CreateIssueCommand}"/>
+                </StackPanel>
+                <TextBox Grid.Column="1" Margin="10 10 0 10" x:Name="filterText" VerticalContentAlignment="Center"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="{Binding ActualHeight, ElementName=comboProjects}" KeyUp="OnBtnFilter" />
+                <Button Grid.Column="2" Margin="-20 10 10 10" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Height="{Binding ActualHeight, ElementName=btnCreateIssue}" Click="OnBtnFilter">
+                    <Path Data="{StaticResource IconSearch}" Height="16" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                </Button>
+
+            </Grid>
+        </Border>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition x:Name="detailsPanelGridColumn" Width="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowDetailsPanelWidth, Mode=TwoWay}"/>
+            </Grid.ColumnDefinitions>
+            
+            <ListBox Margin="5"
+                     x:Name="listBoxIssues"
+                     VerticalAlignment="Stretch"
+                     HorizontalContentAlignment="Stretch"
+                     BorderThickness="0"
+                     IsSynchronizedWithCurrentItem="True"
+                     Style="{StaticResource issuesListSource}"
+                     SelectedItem="{Binding SelectedIssue, Mode=TwoWay}"
+                     ItemTemplate="{StaticResource IssueListRowTemplate}" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+            
+                
+            <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+            <Border Grid.Column="2" Background="#F2F2F2">
+                <Grid Background="White" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="243*" />
+                        <RowDefinition Height="21*"/>
+                        <RowDefinition Height="25*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel>
+                        <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding SelectedIssue.DisplayId}" />
+                        <TextBlock Margin="5 0 0 0" FontSize="14" FontWeight="Bold" Text="{Binding SelectedIssue.Title}" TextWrapping="WrapWithOverflow" />
+                    </DockPanel>
+                    <DockPanel Grid.Row="1" Margin="10 2 2 2">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="2" Text="{Binding SelectedIssueCommentsCount}" />
+                            <Path Margin="2" Height="16" Data="{StaticResource IconComments}" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Margin="2" Text="{Binding SelectedIssueVotesCount}" />
+                            <Path Margin="2"  Height="16"  Data="{StaticResource IconLike}" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                        </StackPanel>
+                    </DockPanel>
+                    <TextBlock Grid.Row="2" Foreground="#4D5250" FontSize="12" Margin="5 10" Text="{Binding SelectedIssue.Details}" TextWrapping="WrapWithOverflow" Grid.RowSpan="3" />
+                    <ListBox Grid.Row="5" ItemsSource="{Binding SelectedIssue.Comments}" DisplayMemberPath="Text" BorderThickness="0" />
+                </Grid>
+            </Border>
+        </Grid>
+        <StatusBar Grid.Row="2">
+            <CheckBox Content="Show fixed issues" x:Name="checkBoxShowFixedIssues" IsChecked="{Binding ShowFixedIssues, Mode=OneWayToSource}" />
+            <TextBlock Text="Items source:" Margin="10 0 5 0"/>
+            <ComboBox x:Name="dataSourceCombo" SelectedIndex="{Binding SelectedDataSource, Mode=OneWayToSource}">
+                <ComboBoxItem IsSelected="True">Issues</ComboBoxItem>
+                <ComboBoxItem>Backlog</ComboBoxItem>
+                <ComboBoxItem>Trash</ComboBoxItem>
+            </ComboBox>
+            <TextBlock Text="Sort by:" Margin="10 0 5 0"/>
+            <ComboBox x:Name="sortFieldCombo" SelectedIndex="{Binding IssuesSortField, Mode=OneWayToSource}" SelectionChanged="OnComboSortOrderSelectionChanged">
+                <ComboBoxItem IsSelected="True">Issue Id</ComboBoxItem>
+                <ComboBoxItem>Votes</ComboBoxItem>
+            </ComboBox>
+        </StatusBar>
+    </Grid>
+</Window>
