@@ -25,3 +25,6 @@ The app was created for internal needs, it does not contain all the planned feat
 
 ## Requirements
 .Net Framework 4.6.1 or newer
+
+## Other products
+For other products please visit https://www.wincatalog.com and https://www.securesafepro.com
