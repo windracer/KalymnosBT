@@ -27,6 +27,10 @@ namespace KalymnosBT.ViewModels
             NumberOfVotes = 1
         }
 
+        private string _mainWndTitle;
+
+        public string MainWndTitle => string.IsNullOrEmpty(_mainWndTitle) ? (_mainWndTitle = $"KalymnosBT - Bug tracker for indi-(e)-viduals // {KalymnosDbHelper.DbFile}") : _mainWndTitle;
+
         public DesktopSettings WindowsSettings => DesktopSettings.Default; 
         
         public Window TheView { get; set; }
