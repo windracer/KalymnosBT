@@ -13,7 +13,7 @@
         d:DesignWidth="550"
         d:DesignHeight="450"
         ResizeMode="CanResizeWithGrip"
-        Title="KalymnosBT - Bug tracker for indi-(e)-viduals" 
+        Title="{Binding MainWndTitle}" 
         WindowState="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowState, Mode=TwoWay}"
         Top="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowTopPosition, Mode=TwoWay}"
         Left="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowLeftPosition, Mode=TwoWay}"
