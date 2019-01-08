@@ -18,7 +18,7 @@ namespace KalymnosBT.Models
         private static int LastDbRevission => 1;
 
         private static string DbFolder { get; } = DesktopSettings.Default.GetStoringFolder("data", true);
-        private static string DbFile => Path.Combine(DbFolder, "kalymnos.bt");
+        public static string DbFile => Path.Combine(DbFolder, "kalymnos.bt");
         private static string DbBackupFile => Path.Combine(DbFolder, "kalymnos.bak");
 
         public static void Save(KalymnosDb db)

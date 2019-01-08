@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using KalymnosBT.Models;
+using KalymnosBT.ViewModels;
 
 namespace KalymnosBT.Views
 {
@@ -47,12 +48,12 @@ namespace KalymnosBT.Views
                 throw new NullReferenceException("DataCotext is null");
             }
 
-            if (!(DataContext is Vote))
+            if (!(DataContext is VoteEditViewModel))
             {
                 throw new InvalidDataException("DataContext is not Vote!");
             }
 
-            var vote = (Vote) DataContext;
+            var vote = ((VoteEditViewModel) DataContext).Model;
 
             if (MessageBoxResult.Yes == MessageBox.Show(this, $"Are you sure you want to delete the vote from {vote.Name} <{vote.Email}>?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No))
             {

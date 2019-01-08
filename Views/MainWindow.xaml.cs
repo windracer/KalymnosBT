@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -64,25 +65,75 @@ namespace KalymnosBT
             }
         }
 
+        ObservableCollection<Issue> GetSelectedDataSource()
+        {
+            if (1 /*Backlog*/ == _viewModel?.SelectedDataSource)
+                return _viewModel?.SelectedProject?.Backlog;
+
+            if (2 /*Trash*/ == _viewModel?.SelectedDataSource)
+                return _viewModel?.SelectedProject?.Trash;
+
+            return _viewModel?.SelectedProject?.Issues;
+        }
+
         public void SortIssues()
         {
-            if (_viewModel?.SelectedProject?.Issues == null)
+            var selectedDataSource = GetSelectedDataSource();
+            if (null == selectedDataSource)
                 return;
 
-            var view = CollectionViewSource.GetDefaultView(_viewModel.SelectedProject.Issues);
+            var view = CollectionViewSource.GetDefaultView(selectedDataSource);
             view.SortDescriptions.Clear();
 
-            if (sortFieldCombo.SelectedIndex == 0)
+            if (sortFieldCombo.SelectedIndex == 0) // Issue Id
             {
                 view.SortDescriptions.Add(new SortDescription("IssueId", ListSortDirection.Ascending));
                 var liveView = (ICollectionViewLiveShaping)view;
                 liveView.IsLiveFiltering = true;
 
             }
-            else
+            else if (sortFieldCombo.SelectedIndex == 1) // Votes Count
             {
                 view.SortDescriptions.Add(new SortDescription("Votes.Count", ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription("Starred", ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription("Important", ListSortDirection.Descending));
                 var liveView = (ICollectionViewLiveShaping)view;
+                liveView.IsLiveFiltering = true;
+            }
+            else if (sortFieldCombo.SelectedIndex == 2) // Stars -> Id
+            {
+                view.SortDescriptions.Add(new SortDescription("Starred", ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription("Important", ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription("IssueId", ListSortDirection.Ascending));
+
+                var liveView = (ICollectionViewLiveShaping) view;
+                liveView.IsLiveFiltering = true;
+            }
+            else if (sortFieldCombo.SelectedIndex == 3) // Importance -> Id
+            {
+                view.SortDescriptions.Add(new SortDescription("Important", ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription("Starred", ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription("IssueId", ListSortDirection.Ascending));
+
+                var liveView = (ICollectionViewLiveShaping) view;
+                liveView.IsLiveFiltering = true;
+            }
+            else if (sortFieldCombo.SelectedIndex == 4) // Stars -> Votes
+            {
+                view.SortDescriptions.Add(new SortDescription("Starred", ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription("Votes.Count", ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription("Important", ListSortDirection.Descending));
+
+                var liveView = (ICollectionViewLiveShaping) view;
+                liveView.IsLiveFiltering = true;
+            }
+            else if (sortFieldCombo.SelectedIndex == 5) // Importance -> Votes
+            {
+                view.SortDescriptions.Add(new SortDescription("Important", ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription("Votes.Count", ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription("Starred", ListSortDirection.Descending));
+
+                var liveView = (ICollectionViewLiveShaping) view;
                 liveView.IsLiveFiltering = true;
             }
 
@@ -90,7 +141,11 @@ namespace KalymnosBT
 
         public void FilterIssues()
         {
-            var view = CollectionViewSource.GetDefaultView(_viewModel.SelectedProject.Issues);
+            var selectedDataSource = GetSelectedDataSource();
+            if (null == selectedDataSource)
+                return;
+
+            var view = CollectionViewSource.GetDefaultView(selectedDataSource);
 
             if (string.IsNullOrWhiteSpace(filterText.Text))
             {
@@ -146,6 +201,12 @@ namespace KalymnosBT
 
         private void OnComboSortOrderSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            SortIssues();
+        }
+
+        private void OnComboDataSourceSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FilterIssues();
             SortIssues();
         }
     }

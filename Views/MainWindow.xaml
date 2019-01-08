@@ -227,7 +227,7 @@
         <StatusBar Grid.Row="2">
             <CheckBox Content="Show fixed issues" x:Name="checkBoxShowFixedIssues" IsChecked="{Binding ShowFixedIssues, Mode=OneWayToSource}" />
             <TextBlock Text="Items source:" Margin="10 0 5 0"/>
-            <ComboBox x:Name="dataSourceCombo" SelectedIndex="{Binding SelectedDataSource, Mode=OneWayToSource}">
+            <ComboBox x:Name="dataSourceCombo" SelectedIndex="{Binding SelectedDataSource, Mode=OneWayToSource}" SelectionChanged="OnComboDataSourceSelectionChanged">
                 <ComboBoxItem IsSelected="True">Issues</ComboBoxItem>
                 <ComboBoxItem>Backlog</ComboBoxItem>
                 <ComboBoxItem>Trash</ComboBoxItem>
@@ -236,6 +236,10 @@
             <ComboBox x:Name="sortFieldCombo" SelectedIndex="{Binding IssuesSortField, Mode=OneWayToSource}" SelectionChanged="OnComboSortOrderSelectionChanged">
                 <ComboBoxItem IsSelected="True">Issue Id</ComboBoxItem>
                 <ComboBoxItem>Votes</ComboBoxItem>
+                <ComboBoxItem>Stars-&gt;Id</ComboBoxItem>
+                <ComboBoxItem>Importance-&gt;Id</ComboBoxItem>
+                <ComboBoxItem>Stars-&gt;Votes</ComboBoxItem>
+                <ComboBoxItem>Importance-&gt;Votes</ComboBoxItem>
             </ComboBox>
         </StatusBar>
     </Grid>
