@@ -2,8 +2,12 @@
 Portable issue tracking tool for individuals / works in Windows
 ![KalymnosBT Main Window](/Downloads/KalymnosBT.png)
 
+## Download
+
+Version 1.5 (Released on January 11, 2019) - [\[download\]](/Downloads/KalymnosBTPortable_1_5.zip?raw=true)
+
 ## How to use
-Download the precompiled binaries [here](/Downloads/KalymnosBTPortable_1_5.zip?raw=true) and unpack it anywhere on your computer. This is the portable version, you can save it inside a local Dropbox or Google Drive folder. Start "KalymnosBTPortable.exe" to launch the program.
+Download the precompiled binaries [\[here\]](/Downloads/KalymnosBTPortable_1_5.zip?raw=true) and unpack it anywhere on your computer. This is the portable version, you can save it inside a local Dropbox or Google Drive folder. Start "KalymnosBTPortable.exe" to launch the program.
 
 ## The story
 For several years a free local copy of [YouTrack](https://www.jetbrains.com/youtrack/) was used to maintain suggestions and issues for [WinCatalog Disk Catalog Software](https://www.wincatalog.com). With no doubts, YouTrack can be recommended for everyone as the best issue tracking software, but once, after upgrading a system hard drive, all the collected issues and suggestions were lost without an ability to recover them (and all the existing backups didn't work). It was possible to restore most of the issues from conversations with the clients, but a Google Spreadsheet was used since then. This project is the replacement of that Google Spreadsheet and a result of learning the WPF.
