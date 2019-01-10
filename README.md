@@ -1,6 +1,6 @@
 # KalymnosBT
 Portable issue tracking tool for individuals / works in Windows
-![KalymnosBT Main Window](/Downloads/KalymnosBT.png)
+![KalymnosBT Main Window](/Downloads/KalymnosBT.1.5.png)
 
 ## Download
 
