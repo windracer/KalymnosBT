@@ -53,6 +53,35 @@ namespace KalymnosBT
             _viewModel.PropertyChanged += ViewModelPropertyChanged;
             FilterIssues();
             SortIssues();
+
+            uiScaleSlider.MouseDoubleClick += RestoreScalingFactor;
+        }
+
+        protected override void OnPreviewMouseWheel(MouseWheelEventArgs args)
+        {
+            base.OnPreviewMouseWheel(args);
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                uiScaleSlider.Value += (args.Delta > 0) ? 0.1 : -0.1;
+            }
+        }
+
+        void RestoreScalingFactor(object sender, MouseButtonEventArgs args)
+        {
+            ((Slider)sender).Value = 1.0;
+        }
+
+        protected override void OnPreviewMouseDown(MouseButtonEventArgs args)
+        {
+            base.OnPreviewMouseDown(args);
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                if (args.MiddleButton == MouseButtonState.Pressed)
+                {
+                    RestoreScalingFactor(uiScaleSlider, args);
+                }
+            }
+
         }
 
         private void ViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -208,6 +237,11 @@ namespace KalymnosBT
         {
             FilterIssues();
             SortIssues();
+        }
+
+        private void OnComboZoomSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
         }
     }
 }

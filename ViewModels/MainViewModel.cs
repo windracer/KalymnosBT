@@ -56,6 +56,16 @@ namespace KalymnosBT.ViewModels
         private IssueSortFields _issueSortField; //0 - issue id, 1 - number of votes
         public int IssueSortField { get => (int) _issueSortField; set => SetProperty(ref _issueSortField, (IssueSortFields) value); }
 
+        public double ZoomFactor
+        {
+            get => DesktopSettings.Default.ZoomFactor;
+            set
+            {
+                DesktopSettings.Default.ZoomFactor = value;
+                OnPropertyChanged();
+            }
+        }
+
         private ICommand _showBackstageWindowCommand;
         public ICommand ShowBackstageWindowCommand
         {

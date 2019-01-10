@@ -57,6 +57,7 @@ namespace KalymnosBT.Settings
         //--------------
         public string LastSelectedProject { get => GetValue<string>(); set => SetValue(value); }
         public bool ShowFixedIssuesSelected { get => GetValue<bool>(); set => SetValue(value); }
+        public double ZoomFactor { get => GetValue<double>(1); set => SetValue(value); }
 
         public DesktopSettings()
         {
@@ -71,6 +72,9 @@ namespace KalymnosBT.Settings
             //IssueWindowLeftPosition = 175;
             //IssueWindowTopPosition = 175;
             Load();
+
+            if (ZoomFactor > 2 || ZoomFactor < 0.8)
+                ZoomFactor = 1;
         }
 
     }

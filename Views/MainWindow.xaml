@@ -144,6 +144,13 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid.LayoutTransform>
+            <ScaleTransform CenterX="0" CenterY="0" 
+                            ScaleX="{Binding ElementName=uiScaleSlider,Path=Value}"
+                            ScaleY="{Binding ElementName=uiScaleSlider,Path=Value}"
+            />
+        </Grid.LayoutTransform>
+
         <Border Background="DodgerBlue">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -224,23 +231,65 @@
                 </Grid>
             </Border>
         </Grid>
-        <StatusBar Grid.Row="2">
-            <CheckBox Content="Show fixed issues" x:Name="checkBoxShowFixedIssues" IsChecked="{Binding ShowFixedIssues, Mode=OneWayToSource}" />
-            <TextBlock Text="Items source:" Margin="10 0 5 0"/>
-            <ComboBox x:Name="dataSourceCombo" SelectedIndex="{Binding SelectedDataSource, Mode=OneWayToSource}" SelectionChanged="OnComboDataSourceSelectionChanged">
-                <ComboBoxItem IsSelected="True">Issues</ComboBoxItem>
-                <ComboBoxItem>Backlog</ComboBoxItem>
-                <ComboBoxItem>Trash</ComboBoxItem>
-            </ComboBox>
-            <TextBlock Text="Sort by:" Margin="10 0 5 0"/>
-            <ComboBox x:Name="sortFieldCombo" SelectedIndex="{Binding IssuesSortField, Mode=OneWayToSource}" SelectionChanged="OnComboSortOrderSelectionChanged">
-                <ComboBoxItem IsSelected="True">Issue Id</ComboBoxItem>
-                <ComboBoxItem>Votes</ComboBoxItem>
-                <ComboBoxItem>Stars-&gt;Id</ComboBoxItem>
-                <ComboBoxItem>Importance-&gt;Id</ComboBoxItem>
-                <ComboBoxItem>Stars-&gt;Votes</ComboBoxItem>
-                <ComboBoxItem>Importance-&gt;Votes</ComboBoxItem>
-            </ComboBox>
+        <StatusBar Grid.Row="2" x:Name="statusBar">
+            <Grid HorizontalAlignment="Stretch" Width="{Binding ElementName=statusBar, Path=ActualWidth}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="170"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox Content="Show fixed issues" x:Name="checkBoxShowFixedIssues" VerticalAlignment="Center" IsChecked="{Binding ShowFixedIssues, Mode=OneWayToSource}" />
+                <TextBlock Grid.Column="1" Text="Items source:" Margin="10 0 5 0" VerticalAlignment="Center"/>
+                <ComboBox Grid.Column="2" x:Name="dataSourceCombo" VerticalAlignment="Center" SelectedIndex="{Binding SelectedDataSource, Mode=OneWayToSource}" SelectionChanged="OnComboDataSourceSelectionChanged">
+                    <ComboBoxItem IsSelected="True">Issues</ComboBoxItem>
+                    <ComboBoxItem>Backlog</ComboBoxItem>
+                    <ComboBoxItem>Trash</ComboBoxItem>
+                </ComboBox>
+                <TextBlock Grid.Column="3" Text="Sort by:" VerticalAlignment="Center" Margin="10 0 5 0"/>
+                <ComboBox Grid.Column="4" x:Name="sortFieldCombo" VerticalAlignment="Center" SelectedIndex="{Binding IssuesSortField, Mode=OneWayToSource}" SelectionChanged="OnComboSortOrderSelectionChanged">
+                    <ComboBoxItem IsSelected="True">Issue Id</ComboBoxItem>
+                    <ComboBoxItem>Votes</ComboBoxItem>
+                    <ComboBoxItem>Stars-&gt;Id</ComboBoxItem>
+                    <ComboBoxItem>Importance-&gt;Id</ComboBoxItem>
+                    <ComboBoxItem>Stars-&gt;Votes</ComboBoxItem>
+                    <ComboBoxItem>Importance-&gt;Votes</ComboBoxItem>
+                </ComboBox>
+                
+                
+                <StackPanel Grid.Column="6" Orientation="Horizontal">
+                    <TextBlock Text="Zoom:" VerticalAlignment="Center" Margin="10 0 5 0"/>
+                    <!-- ComboBox VerticalAlignment="Center" SelectionChanged="OnComboZoomSelectionChanged">
+                        <ComboBoxItem>80%</ComboBoxItem>
+                        <ComboBoxItem>90%</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">100%</ComboBoxItem>
+                        <ComboBoxItem>110%</ComboBoxItem>
+                        <ComboBoxItem>125%</ComboBoxItem>
+                        <ComboBoxItem>150%</ComboBoxItem>
+                        <ComboBoxItem>175%</ComboBoxItem>
+                        <ComboBoxItem>200%</ComboBoxItem>
+                    </ -->
+                    <Slider
+                        x:Name="uiScaleSlider"
+                        Width="100"          
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        ToolTip="{Binding ZoomFactor}"
+                        Value="{Binding ZoomFactor, Mode=TwoWay}" Minimum="0.8" Maximum="2"
+                        Orientation="Horizontal"
+                        Ticks="1"
+                        IsSnapToTickEnabled="False"
+                        TickPlacement="None"
+                        AutoToolTipPlacement="TopLeft"
+                        AutoToolTipPrecision="2"
+                        
+                    />
+                </StackPanel>
+            </Grid>
         </StatusBar>
     </Grid>
 </Window>
