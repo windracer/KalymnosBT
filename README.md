@@ -6,7 +6,7 @@ Portable issue tracking tool for individuals / works in Windows
 
 Version 1.6 (Released on March 04, 2020) - [\[download\]](/Downloads/KalymnosBTPortable_1_5.zip?raw=true)
 
-- Fixed the ["bad dates format"](/issues/3) issue.
+- Fixed the ["bad dates format"](https://github.com/windracer/KalymnosBT/issues/3) issue.
 
 ## How to use
 Download the precompiled binaries [\[here\]](/Downloads/KalymnosBTPortable_1_5.zip?raw=true) and unpack it anywhere on your computer. This is the portable version, you can save it inside a local Dropbox or Google Drive folder. Start "KalymnosBTPortable.exe" to launch the program.
