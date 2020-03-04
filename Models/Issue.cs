@@ -113,7 +113,9 @@ namespace KalymnosBT.Models
         public string DisplayId => this.Project != null ? $"{this.Project.Prefix}-{IssueId}" : IssueId.ToString();
 
         public DateTime Created { get => _created; set => SetProperty(ref _created, value); }
+        public string CreatedAsString { get => Created.ToString("d", CultureInfo.CurrentCulture); }
         public DateTime Modified { get => _modified; set => SetProperty(ref _modified, value); }
+        public string ModifiedAsString { get => Modified.ToString("d", CultureInfo.CurrentCulture); }
         public DateTime Fixed { get => _fixed; set => SetProperty(ref _fixed, value); }
 
         public bool Important { get => _important; set => SetProperty(ref _important, value); }

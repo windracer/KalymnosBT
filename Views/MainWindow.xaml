@@ -132,7 +132,7 @@
                             <Path Margin="2"  Height="16"  Data="{StaticResource IconLike}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
                         </StackPanel>
                     </DockPanel>
-                    <TextBlock Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Right"  Text="{Binding Created, StringFormat=d}" Margin="25,2,2,2" />
+                    <TextBlock Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Right"  Text="{Binding CreatedAsString}" Margin="25,2,2,2" />
                     <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="5" Text="{Binding Details}" FontSize="12"  Foreground="#4D5250"/>
                 </Grid>
             </Border>

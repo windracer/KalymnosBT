@@ -9,6 +9,7 @@
         xmlns:models="clr-namespace:KalymnosBT.Models"
         xmlns:viewModels="clr-namespace:KalymnosBT.ViewModels"
         xmlns:settings="clr-namespace:KalymnosBT.Settings"
+        xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
         WindowState="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=IssueWindowState, Mode=TwoWay}"
         Top="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=IssueWindowTopPosition, Mode=TwoWay}"
         Left="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=IssueWindowLeftPosition, Mode=TwoWay}"
@@ -128,9 +129,9 @@
 
         <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Left">
             <TextBlock Text="Created: " Margin="5 2 2 2" VerticalAlignment="Center"/>
-            <DatePicker Text="{Binding Model.Created, Mode=TwoWay}" Margin="2" VerticalAlignment="Center" />
+            <DatePicker SelectedDate="{Binding Model.Created, Mode=TwoWay}" Margin="2" VerticalAlignment="Center" />
             <TextBlock Text="Modified: " Margin="5 2 2 2" VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding Model.Modified, StringFormat=d}" Margin="2" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Model.ModifiedAsString}" Margin="2" VerticalAlignment="Center" />
             <TextBlock Text="Status: " Margin="15 2 2 2" VerticalAlignment="Center"/>
             <ComboBox SelectedItem="{Binding CurrentStatus, Mode=TwoWay}" ItemsSource="{Binding IssueStatusSecection, Mode=OneWay}" VerticalAlignment="Center" Margin="0,10,0,6">
                 <ComboBox.ItemTemplate>

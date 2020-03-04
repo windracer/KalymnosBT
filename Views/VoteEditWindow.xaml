@@ -39,7 +39,7 @@
                 </StackPanel>
             </StackPanel>
             
-            <DatePicker Grid.Row="2" Grid.Column="1" Text="{Binding Model.When, Mode=TwoWay}" Margin="5" VerticalAlignment="Center" />
+            <DatePicker Grid.Row="2" Grid.Column="1" SelectedDate="{Binding Model.When, Mode=TwoWay}" Margin="5" VerticalAlignment="Center" />
         </Grid>
 
         <UniformGrid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Rows="1">
