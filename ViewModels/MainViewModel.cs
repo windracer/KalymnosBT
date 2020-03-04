@@ -66,6 +66,27 @@ namespace KalymnosBT.ViewModels
             }
         }
 
+        private ICommand _setFocusToSearchBoxCommand;
+        public ICommand SetFocusToSearchBoxCommand
+        {
+            get
+            {
+                return _setFocusToSearchBoxCommand ??
+                    (
+                    _setFocusToSearchBoxCommand = new RelayCommand(
+                        () =>
+                        {
+                            var mainWnd = TheView as MainWindow;
+                            if (mainWnd != null)
+                            {
+                                mainWnd.filterText.Focus();
+                                mainWnd.filterText.SelectAll();
+                            }
+                        })
+                    );
+            }
+        }
+
         private ICommand _showBackstageWindowCommand;
         public ICommand ShowBackstageWindowCommand
         {

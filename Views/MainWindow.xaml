@@ -138,6 +138,10 @@
             </Border>
         </DataTemplate>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="L" Modifiers="Ctrl" Command="{Binding SetFocusToSearchBoxCommand}" />
+        <KeyBinding Key="F3" Command="{Binding SetFocusToSearchBoxCommand}" />
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

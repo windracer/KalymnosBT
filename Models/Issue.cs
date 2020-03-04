@@ -165,36 +165,60 @@ namespace KalymnosBT.Models
         {
             query = query.ToUpperInvariant();
 
-            if (Title != null && Title.ToUpperInvariant().Contains(query))
-                return true;
+            var parts = query.Split(' ');
 
-            if (Details != null && Details.ToUpperInvariant().Contains(query))
-                return true;
-
-            if (DisplayId != null && DisplayId.ToUpperInvariant().Contains(query))
-                return true;
-
-            if (Comments != null)
+            foreach (var part in parts)
             {
-                foreach (var comment in Comments)
-                {
-                    if (comment.Text.ToUpperInvariant().Contains(query))
-                        return true;
-                }
-            }
+                if (Title != null && Title.ToUpperInvariant().Contains(part))
+                    continue;
 
-            if (Votes != null)
-            {
-                foreach (var vote in Votes)
-                {
-                    if (vote.Name != null && vote.Name.ToUpperInvariant().Contains(query))
-                        return true;
+                if (Details != null && Details.ToUpperInvariant().Contains(part))
+                    continue;
 
-                    if (vote.Email != null && vote.Email.ToUpperInvariant().Contains(query))
-                        return true;
+                if (DisplayId != null && DisplayId.ToUpperInvariant().Contains(part))
+                    continue;
+
+                if (Comments != null)
+                {
+                    var found = false;
+                    foreach (var comment in Comments)
+                    {
+                        if (comment.Text.ToUpperInvariant().Contains(part))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found)
+                        continue;
                 }
+
+                if (Votes != null)
+                {
+                    var found = false;
+                    foreach (var vote in Votes)
+                    {
+                        if (vote.Name != null && vote.Name.ToUpperInvariant().Contains(part))
+                        {
+                            found = true;
+                            break;
+                        }
+
+                        if (vote.Email != null && vote.Email.ToUpperInvariant().Contains(part))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found)
+                        continue;
+                }
+
+                return false;
             }
-            return false;
+            return true;
         }
 
         public void CopyFrom(Issue src)
