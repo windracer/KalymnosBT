@@ -2,16 +2,22 @@
 Portable issue tracking tool for individuals / works in Windows
 ![KalymnosBT Main Window](/Downloads/KalymnosBT.1.5.png)
 
-## Download
+## Download & version history
 
-Version 1.7 (Released on March 04, 2020) - [\[download\]](/Downloads/KalymnosBTPortable_1_7.zip?raw=true)
+Version 1.8 (Released on August 29, 2021) - [\[download\]](/Downloads/KalymnosBTPortable_1_8.zip?raw=true)
+
+- Bug fixed: the votes panel moves outside the screen on long comments in Issue Details Dialog
+- Bug fixed: the comments panel moves outside the screen on long description in sidebar of the Main Window
+- Target .NET Framework switched to 4.8
+
+Version 1.7 (Released on March 04, 2020)
 
 - Fixed the ["bad dates format"](https://github.com/windracer/KalymnosBT/issues/3) issue.
 - Added two shortcuts CTRL+L and F3 to set focus to the Search box.
 - Search feature improved: now KalymnosBT finds entries containing ALL words in any order in any field. 
 
 ## How to use
-Download the precompiled binaries [\[here\]](/Downloads/KalymnosBTPortable_1_5.zip?raw=true) and unpack it anywhere on your computer. This is the portable version, you can save it inside a local Dropbox or Google Drive folder. Start "KalymnosBTPortable.exe" to launch the program.
+Download the precompiled binaries [\[here\]](/Downloads/KalymnosBTPortable_1_8.zip?raw=true) and unpack it anywhere on your computer. This is the portable version, you can save it inside a local Dropbox or Google Drive folder. Start "KalymnosBTPortable.exe" to launch the program.
 
 ## The story
 For several years a free local copy of [YouTrack](https://www.jetbrains.com/youtrack/) was used to maintain suggestions and issues for [WinCatalog Disk Catalog Software](https://www.wincatalog.com). With no doubts, YouTrack can be recommended for everyone as the best issue tracking software, but once, after upgrading a system hard drive, all the collected issues and suggestions were lost without an ability to recover them (and all the existing backups didn't work). It was possible to restore most of the issues from conversations with the clients, but a Google Spreadsheet was used since then. This project is the replacement of that Google Spreadsheet and a result of learning the WPF.
@@ -32,7 +38,7 @@ KalymnosBT was designed as a portable app. The executable should contain the `po
 The app was created for internal needs, it does not contain all the planned features and may loss all the data it keeps. Please use it at your own risk. If you don't agree with this disclaimer, you should stop using the app.
 
 ## Requirements
-.Net Framework 4.6.1 or newer
+.Net Framework 4.8 or newer
 
 ## Other products
 For other products please visit https://www.wincatalog.com and https://www.securesafepro.com
