@@ -1,52 +1,55 @@
 ﻿<Window x:Class="KalymnosBT.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KalymnosBT"
-        xmlns:models="clr-namespace:KalymnosBT.Models"
-        mc:Ignorable="d"
-        xmlns:designData="clr-namespace:KalymnosBT.DesignData"
-        xmlns:settings="clr-namespace:KalymnosBT.Settings"
-        xmlns:mvvmBase="clr-namespace:KalymnosBT.MVVMBase"
-        d:DataContext="{d:DesignInstance designData:SampleMainViewModel, IsDesignTimeCreatable=True}"
-        d:DesignWidth="550"
-        d:DesignHeight="450"
-        ResizeMode="CanResizeWithGrip"
-        Title="{Binding MainWndTitle}" 
-        WindowState="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowState, Mode=TwoWay}"
-        Top="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowTopPosition, Mode=TwoWay}"
-        Left="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowLeftPosition, Mode=TwoWay}"
-        Height="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowHeight, Mode=TwoWay}" 
-        Width="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowWidth, Mode=TwoWay}"
-        Foreground="Black"
-        Closed="OnWindowClosed"
-        Closing="OnWindowClosing"
-        ContentRendered="OnWindowContentRendered"
-        Icon="/KalymnosBT;component/main-icon.ico">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:designData="clr-namespace:KalymnosBT.DesignData"
+    xmlns:local="clr-namespace:KalymnosBT"
+    xmlns:models="clr-namespace:KalymnosBT.Models"
+    xmlns:mvvmBase="clr-namespace:KalymnosBT.MVVMBase"
+    xmlns:settings="clr-namespace:KalymnosBT.Settings"
+    Title="{Binding MainWndTitle}"
+    Width="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowWidth, Mode=TwoWay}"
+    Height="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowHeight, Mode=TwoWay}"
+    MinWidth="550"
+    MinHeight="350"
+    Closed="OnWindowClosed"
+    Closing="OnWindowClosing"
+    ContentRendered="OnWindowContentRendered"
+    Foreground="Black"
+    Icon="/KalymnosBT;component/main-icon.ico"
+    Left="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowLeftPosition, Mode=TwoWay}"
+    ResizeMode="CanResizeWithGrip"
+    Top="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowTopPosition, Mode=TwoWay}"
+    WindowState="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowState, Mode=TwoWay}">
     <Window.Resources>
         <Duration x:Key="listBoxItemRemovalDuration">0:0:0.3</Duration>
-        <Storyboard x:Key="storyboardListBoxItemRemoval" >
-            <DoubleAnimation Storyboard.TargetName="issueBorderTemplate"
-                             Storyboard.TargetProperty="Opacity" 
-                             From="1" To="0" Duration="{StaticResource listBoxItemRemovalDuration}" />
+        <Storyboard x:Key="storyboardListBoxItemRemoval">
+            <DoubleAnimation
+                Storyboard.TargetName="issueBorderTemplate"
+                Storyboard.TargetProperty="Opacity"
+                From="1"
+                To="0"
+                Duration="{StaticResource listBoxItemRemovalDuration}" />
         </Storyboard>
 
         <models:IssueIsFixedToColorConverter x:Key="issueIsFixedToColorConverter" />
         <settings:DesktopSettings x:Key="desktopSettings" />
-        <settings:BoolToWindowStateConverter x:Key="boolToWindowStateConverter"/>
-        <models:IssueIsFixedToTextDecorationConverter x:Key="issueIsFixedToTextDecorationConverter"/>
+        <settings:BoolToWindowStateConverter x:Key="boolToWindowStateConverter" />
+        <models:IssueIsFixedToTextDecorationConverter x:Key="issueIsFixedToTextDecorationConverter" />
         <Style x:Key="issuesListSource" TargetType="ListBox">
             <Setter Property="ItemsSource" Value="{Binding SelectedProject.Issues}" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=dataSourceCombo, Path=SelectedIndex}" Value="1">
+                <DataTrigger
+                    Binding="{Binding ElementName=dataSourceCombo, Path=SelectedIndex}"
+                    Value="1">
                     <Setter Property="ItemsSource" Value="{Binding SelectedProject.Backlog}" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding ElementName=dataSourceCombo, Path=SelectedIndex}" Value="2">
+                <DataTrigger
+                    Binding="{Binding ElementName=dataSourceCombo, Path=SelectedIndex}"
+                    Value="2">
                     <Setter Property="ItemsSource" Value="{Binding SelectedProject.Trash}" />
                 </DataTrigger>
             </Style.Triggers>
-            
+
         </Style>
         <Style x:Key="listViewRowStyle" TargetType="{x:Type Grid}">
             <Style.Resources>
@@ -59,100 +62,180 @@
             </Style.Resources>
         </Style>
         <DataTemplate x:Key="IssueListRowTemplate">
-            <Border Background="#F2F2F2" BorderThickness="1" BorderBrush="#559A9B" x:Name="issueBorderTemplate">
+            <Border x:Name="issueBorderTemplate"
+                Background="#F2F2F2"
+                BorderBrush="#559A9B"
+                BorderThickness="1">
                 <Border.InputBindings>
-                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.EditIssueCommand}" />
+                    <MouseBinding
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.EditIssueCommand}"
+                        Gesture="LeftDoubleClick" />
                 </Border.InputBindings>
-                <Grid Margin="2" Style="{StaticResource listViewRowStyle}">
+                <Grid
+                    Margin="2"
+                    Style="{StaticResource listViewRowStyle}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel Grid.RowSpan="2">
-                        <Path Width="16" Height="16" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"
-                              Data="{StaticResource IconStarFilled}" Fill="DarkGoldenrod">
+                        <Path
+                            Width="16"
+                            Height="16"
+                            Margin="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="{StaticResource IconStarFilled}"
+                            Fill="DarkGoldenrod"
+                            Stretch="Uniform">
                             <Path.Style>
                                 <Style TargetType="{x:Type Path}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Starred}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
+                                        <DataTrigger
+                                            Binding="{Binding Starred}"
+                                            Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Path.Style>
                         </Path>
-                        <Path Width="16" Height="16" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"
-                              Data="{StaticResource IconExclamation}" Fill="Red">
+                        <Path
+                            Width="16"
+                            Height="16"
+                            Margin="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="{StaticResource IconExclamation}"
+                            Fill="Red"
+                            Stretch="Uniform">
                             <Path.Style>
                                 <Style TargetType="{x:Type Path}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Important}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
+                                        <DataTrigger
+                                            Binding="{Binding Important}"
+                                            Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Path.Style>
                         </Path>
-                        <Path Width="16" Height="16" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"
-                              Data="{StaticResource IconPin}" Fill="DarkGreen">
+                        <Path
+                            Width="16"
+                            Height="16"
+                            Margin="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="{StaticResource IconPin}"
+                            Fill="DarkGreen"
+                            Stretch="Uniform">
                             <Path.Style>
                                 <Style TargetType="{x:Type Path}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsBacklogged}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
+                                        <DataTrigger
+                                            Binding="{Binding IsBacklogged}"
+                                            Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Path.Style>
                         </Path>
                     </StackPanel>
-                    <TextBlock  Grid.Column="1" FontWeight="Bold" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding DisplayId}" Margin="2,2,10,2" 
-                               TextDecorations="{Binding IsFixed, Converter={StaticResource issueIsFixedToTextDecorationConverter}}"/>
-                    <TextBlock Grid.Column="2" 
-                               VerticalAlignment="Center" 
-                               Text="{Binding Title}" 
-                               FontSize="14" TextWrapping="Wrap" />
-                    <DockPanel Grid.Column="3" Margin="10 2 2 2">
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="2,2,10,2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Text="{Binding DisplayId}"
+                        TextDecorations="{Binding IsFixed, Converter={StaticResource issueIsFixedToTextDecorationConverter}}" />
+                    <TextBlock
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="{Binding Title}"
+                        TextWrapping="Wrap" />
+                    <DockPanel
+                        Grid.Column="3"
+                        Margin="10,2,2,2">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="2" Text="{Binding Comments.Count}" VerticalAlignment="Center" />
-                            <Path Margin="2" Height="16" Data="{StaticResource IconComments}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                            <TextBlock
+                                Margin="2"
+                                VerticalAlignment="Center"
+                                Text="{Binding Comments.Count}" />
+                            <Path
+                                Height="16"
+                                Margin="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Data="{StaticResource IconComments}"
+                                Stretch="Uniform" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <TextBlock Margin="2" Text="{Binding Votes.Count}" VerticalAlignment="Center" />
-                            <Path Margin="2"  Height="16"  Data="{StaticResource IconLike}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                        <StackPanel
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Margin="2"
+                                VerticalAlignment="Center"
+                                Text="{Binding Votes.Count}" />
+                            <Path
+                                Height="16"
+                                Margin="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Data="{StaticResource IconLike}"
+                                Stretch="Uniform" />
                         </StackPanel>
                     </DockPanel>
-                    <TextBlock Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Right"  Text="{Binding CreatedAsString}" Margin="25,2,2,2" />
-                    <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" TextWrapping="WrapWithOverflow" Margin="5" Text="{Binding Details}" FontSize="12"  Foreground="#4D5250"/>
+                    <TextBlock
+                        Grid.Column="4"
+                        Margin="25,2,2,2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="{Binding CreatedAsString}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Margin="5"
+                        FontSize="12"
+                        Foreground="#4D5250"
+                        Text="{Binding Details}"
+                        TextWrapping="WrapWithOverflow" />
                 </Grid>
             </Border>
         </DataTemplate>
     </Window.Resources>
     <Window.InputBindings>
-        <KeyBinding Key="L" Modifiers="Ctrl" Command="{Binding SetFocusToSearchBoxCommand}" />
-        <KeyBinding Key="F3" Command="{Binding SetFocusToSearchBoxCommand}" />
+        <KeyBinding
+            Key="L"
+            Command="{Binding SetFocusToSearchBoxCommand}"
+            Modifiers="Ctrl" />
+        <KeyBinding
+            Key="F3"
+            Command="{Binding SetFocusToSearchBoxCommand}" />
     </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.LayoutTransform>
-            <ScaleTransform CenterX="0" CenterY="0" 
-                            ScaleX="{Binding ElementName=uiScaleSlider,Path=Value}"
-                            ScaleY="{Binding ElementName=uiScaleSlider,Path=Value}"
-            />
+            <ScaleTransform CenterX="0" CenterY="0" ScaleX="{Binding ElementName=uiScaleSlider, Path=Value}" ScaleY="{Binding ElementName=uiScaleSlider, Path=Value}" />
         </Grid.LayoutTransform>
 
         <Border Background="DodgerBlue">
@@ -163,98 +246,218 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="btnMainMenu" HorizontalAlignment="Right" Margin="10 5 0 5" Background="Transparent" BorderThickness="0" ToolTip="Show backstage window" Command="{Binding ShowBackstageWindowCommand}">
-                        <Path Data="{StaticResource IconMountain}" Height="24" Fill="WhiteSmoke" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
-                    </Button>
-                    <ComboBox Margin="10" MinWidth="150" SelectedIndex="0" Padding="5"
-                          ItemsSource="{Binding Model.Projects}" DisplayMemberPath="Name" VerticalContentAlignment="Center" 
-                              SelectedItem="{Binding SelectedProject, Mode=TwoWay}"
-                              x:Name="comboProjects"/>
-                    <Button x:Name="btnCreateIssue" 
-                            Content="Create Issue" 
-                            Background="DarkOrange" 
-                            Foreground="White" FontWeight="Bold" Padding="10 0" Margin="5" 
-                            Height="{Binding ActualHeight, ElementName=comboProjects}"
+                    <Button x:Name="btnMainMenu"
+                        Margin="10,5,0,5"
+                        HorizontalAlignment="Right"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding ShowBackstageWindowCommand}"
+                        ToolTip="Show backstage window">
+                        <Path
+                            Height="24"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Command="{Binding CreateIssueCommand}"/>
+                            Data="{StaticResource IconMountain}"
+                            Fill="WhiteSmoke"
+                            Stretch="Uniform" />
+                    </Button>
+                    <ComboBox x:Name="comboProjects"
+                        MinWidth="150"
+                        Margin="10"
+                        Padding="5"
+                        VerticalContentAlignment="Center"
+                        DisplayMemberPath="Name"
+                        ItemsSource="{Binding Model.Projects}"
+                        SelectedIndex="0"
+                        SelectedItem="{Binding SelectedProject, Mode=TwoWay}" />
+                    <Button x:Name="btnCreateIssue"
+                        Height="{Binding ActualHeight, ElementName=comboProjects}"
+                        Margin="5"
+                        Padding="10,0"
+                        VerticalAlignment="Center"
+                        Background="DarkOrange"
+                        Command="{Binding CreateIssueCommand}"
+                        Content="Create Issue"
+                        FontWeight="Bold"
+                        Foreground="White" />
                 </StackPanel>
-                <TextBox Grid.Column="1" Margin="10 10 0 10" x:Name="filterText" VerticalContentAlignment="Center"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="{Binding ActualHeight, ElementName=comboProjects}" KeyUp="OnBtnFilter" />
-                <Button Grid.Column="2" Margin="-20 10 10 10" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" BorderThickness="0" Height="{Binding ActualHeight, ElementName=btnCreateIssue}" Click="OnBtnFilter">
-                    <Path Data="{StaticResource IconSearch}" Height="16" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
+                <TextBox x:Name="filterText"
+                    Grid.Column="1"
+                    Height="{Binding ActualHeight, ElementName=comboProjects}"
+                    Margin="10,10,0,10"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    KeyUp="OnBtnFilter" />
+                <Button
+                    Grid.Column="2"
+                    Height="{Binding ActualHeight, ElementName=btnCreateIssue}"
+                    Margin="-20,10,10,10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="OnBtnFilter">
+                    <Path
+                        Height="16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Data="{StaticResource IconSearch}"
+                        Fill="Black"
+                        Stretch="Uniform" />
                 </Button>
 
             </Grid>
         </Border>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition x:Name="detailsPanelGridColumn" Width="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowDetailsPanelWidth, Mode=TwoWay}"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition x:Name="detailsPanelGridColumn"
+                    Width="{Binding Source={x:Static settings:DesktopSettings.Default}, Path=MainWindowDetailsPanelWidth, Mode=TwoWay}" />
             </Grid.ColumnDefinitions>
-            
-            <ListBox Margin="5"
-                     x:Name="listBoxIssues"
-                     VerticalAlignment="Stretch"
-                     HorizontalContentAlignment="Stretch"
-                     BorderThickness="0"
-                     IsSynchronizedWithCurrentItem="True"
-                     Style="{StaticResource issuesListSource}"
-                     SelectedItem="{Binding SelectedIssue, Mode=TwoWay}"
-                     ItemTemplate="{StaticResource IssueListRowTemplate}" 
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
-            
-                
-            <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-            <Border Grid.Column="2" Background="#F2F2F2">
-                <Grid Background="White" Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="243*" />
-                        <RowDefinition Height="21*"/>
-                        <RowDefinition Height="25*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <DockPanel>
-                        <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding SelectedIssue.DisplayId}" />
-                        <TextBlock Margin="5 0 0 0" FontSize="14" FontWeight="Bold" Text="{Binding SelectedIssue.Title}" TextWrapping="WrapWithOverflow" />
-                    </DockPanel>
-                    <DockPanel Grid.Row="1" Margin="10 2 2 2">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="2" Text="{Binding SelectedIssueCommentsCount}" />
-                            <Path Margin="2" Height="16" Data="{StaticResource IconComments}" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
-                        </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <TextBlock Margin="2" Text="{Binding SelectedIssueVotesCount}" />
-                            <Path Margin="2"  Height="16"  Data="{StaticResource IconLike}" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform"/>
-                        </StackPanel>
-                    </DockPanel>
-                    <TextBlock Grid.Row="2" Foreground="#4D5250" FontSize="12" Margin="5 10" Text="{Binding SelectedIssue.Details}" TextWrapping="WrapWithOverflow" Grid.RowSpan="3" />
-                    <ListBox Grid.Row="5" ItemsSource="{Binding SelectedIssue.Comments}" DisplayMemberPath="Text" BorderThickness="0" />
-                </Grid>
-            </Border>
+            <ListBox x:Name="listBoxIssues"
+                Margin="5"
+                VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                BorderThickness="0"
+                IsSynchronizedWithCurrentItem="True"
+                ItemTemplate="{StaticResource IssueListRowTemplate}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedIssue, Mode=TwoWay}"
+                Style="{StaticResource issuesListSource}" />
+
+
+            <GridSplitter
+                Grid.Column="1"
+                Width="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Stretch" />
+
+            <ScrollViewer
+                Grid.Column="2"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+                <Border Background="#F2F2F2">
+                    <Grid
+                        Margin="5"
+                        Background="White">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="243*" />
+                            <RowDefinition Height="21*" />
+                            <RowDefinition Height="25*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <DockPanel>
+                            <TextBlock
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Text="{Binding SelectedIssue.DisplayId}" />
+                            <TextBlock
+                                Margin="5,0,0,0"
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="{Binding SelectedIssue.Title}"
+                                TextWrapping="WrapWithOverflow" />
+                        </DockPanel>
+                        <DockPanel
+                            Grid.Row="1"
+                            Margin="10,2,2,2">
+                            <StackPanel
+                                MinHeight="50"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="2"
+                                    Text="{Binding SelectedIssueCommentsCount}" />
+                                <Path
+                                    Height="16"
+                                    Margin="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Data="{StaticResource IconComments}"
+                                    Fill="Black"
+                                    Stretch="Uniform" />
+                            </StackPanel>
+
+                            <StackPanel
+                                MinHeight="50"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="2"
+                                    Text="{Binding SelectedIssueVotesCount}" />
+                                <Path
+                                    Height="16"
+                                    Margin="2"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Data="{StaticResource IconLike}"
+                                    Fill="Black"
+                                    Stretch="Uniform" />
+                            </StackPanel>
+                        </DockPanel>
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.RowSpan="3"
+                            Margin="5,10"
+                            FontSize="12"
+                            Foreground="#4D5250"
+                            Text="{Binding SelectedIssue.Details}"
+                            TextWrapping="WrapWithOverflow" />
+                        <ListBox
+                            Grid.Row="5"
+                            BorderThickness="0"
+                            DisplayMemberPath="Text"
+                            ItemsSource="{Binding SelectedIssue.Comments}" />
+                    </Grid>
+                </Border>
+            </ScrollViewer>
         </Grid>
-        <StatusBar Grid.Row="2" x:Name="statusBar">
-            <Grid HorizontalAlignment="Stretch" Width="{Binding ElementName=statusBar, Path=ActualWidth}">
+        <StatusBar x:Name="statusBar"
+            Grid.Row="2">
+            <Grid
+                Width="{Binding ElementName=statusBar, Path=ActualWidth}"
+                HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="170" />
                 </Grid.ColumnDefinitions>
-                <CheckBox Content="Show fixed issues" x:Name="checkBoxShowFixedIssues" VerticalAlignment="Center" IsChecked="{Binding ShowFixedIssues, Mode=OneWayToSource}" />
-                <TextBlock Grid.Column="1" Text="Items source:" Margin="10 0 5 0" VerticalAlignment="Center"/>
-                <ComboBox Grid.Column="2" x:Name="dataSourceCombo" VerticalAlignment="Center" SelectedIndex="{Binding SelectedDataSource, Mode=OneWayToSource}" SelectionChanged="OnComboDataSourceSelectionChanged">
+                <CheckBox x:Name="checkBoxShowFixedIssues"
+                    VerticalAlignment="Center"
+                    Content="Show fixed issues"
+                    IsChecked="{Binding ShowFixedIssues, Mode=OneWayToSource}" />
+                <TextBlock
+                    Grid.Column="1"
+                    Margin="10,0,5,0"
+                    VerticalAlignment="Center"
+                    Text="Items source:" />
+                <ComboBox x:Name="dataSourceCombo"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    SelectedIndex="{Binding SelectedDataSource, Mode=OneWayToSource}"
+                    SelectionChanged="OnComboDataSourceSelectionChanged">
                     <ComboBoxItem IsSelected="True">Issues</ComboBoxItem>
                     <ComboBoxItem>Backlog</ComboBoxItem>
                     <ComboBoxItem>Trash</ComboBoxItem>
                 </ComboBox>
-                <TextBlock Grid.Column="3" Text="Sort by:" VerticalAlignment="Center" Margin="10 0 5 0"/>
-                <ComboBox Grid.Column="4" x:Name="sortFieldCombo" VerticalAlignment="Center" SelectedIndex="{Binding IssuesSortField, Mode=OneWayToSource}" SelectionChanged="OnComboSortOrderSelectionChanged">
+                <TextBlock
+                    Grid.Column="3"
+                    Margin="10,0,5,0"
+                    VerticalAlignment="Center"
+                    Text="Sort by:" />
+                <ComboBox x:Name="sortFieldCombo"
+                    Grid.Column="4"
+                    VerticalAlignment="Center"
+                    SelectedIndex="{Binding IssuesSortField, Mode=OneWayToSource}"
+                    SelectionChanged="OnComboSortOrderSelectionChanged">
                     <ComboBoxItem IsSelected="True">Issue Id</ComboBoxItem>
                     <ComboBoxItem>Votes</ComboBoxItem>
                     <ComboBoxItem>Stars-&gt;Id</ComboBoxItem>
@@ -262,10 +465,15 @@
                     <ComboBoxItem>Stars-&gt;Votes</ComboBoxItem>
                     <ComboBoxItem>Importance-&gt;Votes</ComboBoxItem>
                 </ComboBox>
-                
-                
-                <StackPanel Grid.Column="6" Orientation="Horizontal">
-                    <TextBlock Text="Zoom:" VerticalAlignment="Center" Margin="10 0 5 0"/>
+
+
+                <StackPanel
+                    Grid.Column="6"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="10,0,5,0"
+                        VerticalAlignment="Center"
+                        Text="Zoom:" />
                     <!-- ComboBox VerticalAlignment="Center" SelectionChanged="OnComboZoomSelectionChanged">
                         <ComboBoxItem>80%</ComboBoxItem>
                         <ComboBoxItem>90%</ComboBoxItem>
@@ -275,23 +483,22 @@
                         <ComboBoxItem>150%</ComboBoxItem>
                         <ComboBoxItem>175%</ComboBoxItem>
                         <ComboBoxItem>200%</ComboBoxItem>
-                    </ -->
-                    <Slider
-                        x:Name="uiScaleSlider"
-                        Width="100"          
+                    </-->
+                    <Slider x:Name="uiScaleSlider"
+                        Width="100"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Center"
-                        ToolTip="{Binding ZoomFactor}"
-                        Value="{Binding ZoomFactor, Mode=TwoWay}" Minimum="0.8" Maximum="2"
-                        Orientation="Horizontal"
-                        Ticks="1"
-                        IsSnapToTickEnabled="False"
-                        TickPlacement="None"
                         AutoToolTipPlacement="TopLeft"
                         AutoToolTipPrecision="2"
-                        
-                    />
+                        IsSnapToTickEnabled="False"
+                        Maximum="2"
+                        Minimum="0.8"
+                        Orientation="Horizontal"
+                        TickPlacement="None"
+                        Ticks="1"
+                        ToolTip="{Binding ZoomFactor}"
+                        Value="{Binding ZoomFactor, Mode=TwoWay}" />
                 </StackPanel>
             </Grid>
         </StatusBar>

@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("OrangeCat Software, LLC")]
 [assembly: AssemblyProduct("KalymnosBT")]
-[assembly: AssemblyCopyright("Copyright ©  2015-2020")]
+[assembly: AssemblyCopyright("Copyright ©  2015-2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,8 +51,8 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.7.20.304")]
-[assembly: AssemblyFileVersion("1.7.20.304")]
+[assembly: AssemblyVersion("1.8.21.829")]
+[assembly: AssemblyFileVersion("1.8.21.829")]
 [assembly: NeutralResourcesLanguage("en-US")]
 [assembly: Guid("4879167A-C003-4C4D-B2A0-925DE0ECC809")]
 
